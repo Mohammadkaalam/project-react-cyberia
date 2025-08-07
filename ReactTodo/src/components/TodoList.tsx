@@ -1,6 +1,9 @@
 import { useAppSelector } from '../store/hooks';
 import TodoItem from './TodoItem';
-import { useState } from 'react'; 
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from "framer-motion";
+
 
 export default function TodoList() {
   const todos = useAppSelector((state) => state.todos.items);
@@ -36,13 +39,24 @@ export default function TodoList() {
         </div>
       </div>
 
-      {/* لیست وظایف */}
+      {/* لیست وظایف با انیمیشن */}
       <ul className="list-group">
-        {filteredTodos.length === 0 ? (
-          <li className="list-group-item text-center">وظیفه‌ای یافت نشد.</li>
-        ) : (
-          filteredTodos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
-        )}
+        <AnimatePresence>
+          {filteredTodos.length === 0 ? (
+            <motion.li
+              className="list-group-item text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              وظیفه‌ای یافت نشد.
+            </motion.li>
+          ) : (
+            filteredTodos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))
+          )}
+        </AnimatePresence>
       </ul>
     </div>
   );
