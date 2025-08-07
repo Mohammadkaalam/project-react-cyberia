@@ -7,7 +7,7 @@ interface ThemeContextType {
 
 export const ThemeContext = createContext<ThemeContextType>({
   darkMode: false,
-  toggleDarkMode: () => {},
+  toggleDarkMode: () => { },
 });
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
