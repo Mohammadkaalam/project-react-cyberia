@@ -4,15 +4,28 @@ import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from "framer-motion";
 
-
 export default function TodoList() {
-  const todos = useAppSelector((state) => state.todos.items);
+const todos = useAppSelector((state) => {
+  const items = state.todos.items;
+  const sort = state.todos.sortOrder;
+
+  let sorted = [...items];
+
+  if (sort === "newest") {
+    sorted.sort((a, b) => b.createdAt - a.createdAt);
+  } else if (sort === "oldest") {
+    sorted.sort((a, b) => a.createdAt - b.createdAt);
+  } else if (sort === "category") {
+    sorted.sort((a, b) => a.category.localeCompare(b.category));
+  }
+
+  return sorted;
+});
   const [filter, setFilter] = useState<'all' | 'personal' | 'work'>('all');
 
   const filteredTodos = todos.filter((todo) =>
     filter === 'all' ? true : todo.category === filter
   );
-
   return (
     <div>
       {/* فیلتر دسته‌بندی */}
