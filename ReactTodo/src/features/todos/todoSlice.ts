@@ -8,7 +8,7 @@ interface TodosState {
 }
 
 const initialState: TodosState = {
-  items: loadFromStorage(), 
+  items: loadFromStorage(),
 };
 
 const todoSlice = createSlice({
@@ -49,8 +49,12 @@ const todoSlice = createSlice({
         saveToStorage(state.items);
       }
     },
+    clearCompleted: (state) => {
+      state.items = state.items.filter((todo) => !todo.completed);
+    },
+
   },
 });
 
-export const { addTodo, toggleTodo, deleteTodo, editTodo } = todoSlice.actions;
+export const { addTodo, toggleTodo, deleteTodo, editTodo, clearCompleted } = todoSlice.actions;
 export default todoSlice.reducer;
