@@ -5,10 +5,12 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface TodosState {
   items: Todo[];
+  sortOrder: "newest" | "oldest" | "category";
 }
 
 const initialState: TodosState = {
   items: loadFromStorage(),
+  sortOrder: "newest",
 };
 
 const todoSlice = createSlice({
@@ -27,6 +29,7 @@ const todoSlice = createSlice({
             title,
             category,
             completed: false,
+            createdAt: Date.now(),
           },
         };
       },
@@ -52,9 +55,12 @@ const todoSlice = createSlice({
     clearCompleted: (state) => {
       state.items = state.items.filter((todo) => !todo.completed);
     },
+    setSortOrder(state, action: PayloadAction<"newest" | "oldest" | "category">) {
+      state.sortOrder = action.payload;
+    }
 
   },
 });
 
-export const { addTodo, toggleTodo, deleteTodo, editTodo, clearCompleted } = todoSlice.actions;
+export const { addTodo, toggleTodo, deleteTodo, editTodo, clearCompleted, setSortOrder} = todoSlice.actions;
 export default todoSlice.reducer;
